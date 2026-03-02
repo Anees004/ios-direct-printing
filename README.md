@@ -1,41 +1,69 @@
-# iOS Label Print Kit (TCP + AirPrint)
+# One-Tap iOS Direct Printing
 
-Production-focused iOS/iPadOS sample for label printing.
+A practical iOS/iPadOS reference project for **direct label printing with one tap**.
 
-This repository is intentionally **print-only**:
-- No web view
-- No biometric/auth flows
-- No unrelated client handoff artifacts
+This repo is designed for teams that want:
+- No AirPrint dialog in the core flow
+- Fast and predictable label output
+- A clean integration path into existing mobile apps
+- Debuggable behavior on simulator and real devices
 
-## What it does
+## What this solves
 
-- Direct TCP printing to network label printers (TSPL over port `9100`)
-- AirPrint fallback using fixed-size PDF labels
-- Label-size configuration (presets + custom)
-- Printable test labels and diagnostics
-- In-app debug logging for print troubleshooting
+Many mobile print implementations fail in production because they rely on UI dialogs, hidden printer settings, or weak error handling. This project shows a deterministic approach:
+- Build TSPL commands in-app
+- Send directly to printer TCP socket (`9100`)
+- Track print state and errors clearly
+- Keep queueing and retries controlled
 
-## Project layout
+## How It Works
 
-- `test_print/` app source
+```mermaid
+flowchart LR
+    A[User taps Print] --> B[ContentView]
+    B --> C[PrinterService.printRaw]
+    C --> D[TSPLGenerator.generate]
+    D --> E[NWConnection TCP 9100]
+    E --> F[Label Printer]
+    F --> G[Physical label output]
+```
+
+## Core Principles
+
+- Direct first: direct TCP is the primary path
+- One tap: user should not navigate system dialogs to print
+- Deterministic output: label size and commands are controlled by app config
+- Friendly failure: when print fails, user gets actionable error text
+
+## Project Structure
+
+- `test_print/` Swift source files
 - `test_print.xcodeproj/` Xcode project
-- `scripts/virtual_printer.py` local virtual printer for testing without hardware
-- `docs/` integration and troubleshooting docs
+- `docs/ARCHITECTURE.md` system design and flow diagrams
+- `docs/INTEGRATION.md` copy-paste integration guide
+- `docs/TROUBLESHOOTING.md` production issue diagnosis
+- `docs/TESTING.md` simulator, virtual printer, and real-device validation
+- `scripts/virtual_printer.py` local TCP sink to inspect payloads
 
-## Quick start
+## Quick Start
 
-1. Open `/Users/geek/MY OWN PROJECTs/test_print/test_print.xcodeproj` in Xcode.
-2. Select an iPhone/iPad simulator or physical iPad.
-3. Build and run.
-4. Open **Settings** in-app and set printer IP/port.
-5. Start with **Print Minimal Test**.
+1. Open `/Users/geek/MY OWN PROJECTs/test_print/test_print.xcodeproj`.
+2. Run on iPad simulator or real iPad.
+3. In app settings, set printer IP + port (`9100`).
+4. Tap **Print Label**.
+5. If needed, run the virtual printer from `/Users/geek/MY OWN PROJECTs/test_print/scripts/virtual_printer.py` to validate payloads.
 
-## Documentation
+## Read These Next
 
-- `/Users/geek/MY OWN PROJECTs/test_print/docs/INTEGRATION.md`
-- `/Users/geek/MY OWN PROJECTs/test_print/docs/TROUBLESHOOTING.md`
-- `/Users/geek/MY OWN PROJECTs/test_print/docs/TESTING.md`
+1. `/Users/geek/MY OWN PROJECTs/test_print/docs/ARCHITECTURE.md`
+2. `/Users/geek/MY OWN PROJECTs/test_print/docs/INTEGRATION.md`
+3. `/Users/geek/MY OWN PROJECTs/test_print/docs/TROUBLESHOOTING.md`
+4. `/Users/geek/MY OWN PROJECTs/test_print/docs/TESTING.md`
+
+## Scope
+
+This repository intentionally focuses on print behavior only. It avoids unrelated app features so developers can integrate the print engine quickly.
 
 ## License
 
-Add your preferred license before publishing publicly.
+Add your preferred license before publishing.
