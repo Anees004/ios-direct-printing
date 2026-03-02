@@ -1,12 +1,79 @@
-<html>
-<body>
-<h1>Demo Images</h1>
-<table style="width:100%">
-  <tr>
-    <td style="text-align:center;"><img src="image1.jpg" width="300" height="428"></td>
-    <td style="text-align:center;"><img src="image2.jpg" width="300" height="428"></td>
-    <td style="text-align:center;"><img src="image3.jpg" width="300" height="428"></td>
-  </tr>
-</table>
-</body>
-</html>
+# One-Tap iOS Direct Printing
+
+A practical iOS/iPadOS reference project for **direct label printing with one tap**.
+
+This repo is designed for teams that want:
+- No AirPrint dialog in the core flow
+- Fast and predictable label output
+- A clean integration path into existing mobile apps
+- Debuggable behavior on simulator and real devices
+
+## Demo
+
+<p align="center">
+  <img width="280" height="396" alt="Print screen" src="https://github.com/user-attachments/assets/cc41cd73-82e1-4144-8e54-c886f7993b7f" />
+  <img width="280" height="396" alt="Label preview" src="https://github.com/user-attachments/assets/7a545275-3774-47a6-b9a2-5303d0209e13" />
+</p>
+<p align="center">
+  <img width="280" height="396" alt="Settings" src="https://github.com/user-attachments/assets/7e71b5e8-2961-4802-90ab-beb9be08628b" />
+</p>
+
+## What this solves
+
+Many mobile print implementations fail in production because they rely on UI dialogs, hidden printer settings, or weak error handling. This project shows a deterministic approach:
+- Build TSPL commands in-app
+- Send directly to printer TCP socket (`9100`)
+- Track print state and errors clearly
+- Keep queueing and retries controlled
+
+## How It Works
+
+```mermaid
+flowchart LR
+    A[User taps Print] --> B[ContentView]
+    B --> C[PrinterService.printRaw]
+    C --> D[TSPLGenerator.generate]
+    D --> E[NWConnection TCP 9100]
+    E --> F[Label Printer]
+    F --> G[Physical label output]
+```
+
+## Core Principles
+
+- Direct first: direct TCP is the primary path
+- One tap: user should not navigate system dialogs to print
+- Deterministic output: label size and commands are controlled by app config
+- Friendly failure: when print fails, user gets actionable error text
+
+## Project Structure
+
+- `test_print/` Swift source files
+- `test_print.xcodeproj/` Xcode project
+- `docs/ARCHITECTURE.md` system design and flow diagrams
+- `docs/INTEGRATION.md` copy-paste integration guide
+- `docs/TROUBLESHOOTING.md` production issue diagnosis
+- `docs/TESTING.md` simulator, virtual printer, and real-device validation
+- `scripts/virtual_printer.py` local TCP sink to inspect payloads
+
+## Quick Start
+
+1. Open `test_print.xcodeproj`.
+2. Run on iPad simulator or real iPad.
+3. In app settings, set printer IP + port (`9100`).
+4. Tap **Print Label**.
+5. If needed, run the virtual printer from `scripts/virtual_printer.py` to validate payloads.
+
+## Read These Next
+
+1. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+2. [`docs/INTEGRATION.md`](docs/INTEGRATION.md)
+3. [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md)
+4. [`docs/TESTING.md`](docs/TESTING.md)
+
+## Scope
+
+This repository intentionally focuses on print behavior only. It avoids unrelated app features so developers can integrate the print engine quickly.
+
+## License
+
+Add your preferred license before publishing.
