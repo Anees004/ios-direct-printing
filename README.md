@@ -47,18 +47,18 @@ flowchart LR
 
 ## Quick Start
 
-1. Open `/Users/geek/MY OWN PROJECTs/test_print/test_print.xcodeproj`.
+1. Open `test_print.xcodeproj`.
 2. Run on iPad simulator or real iPad.
 3. In app settings, set printer IP + port (`9100`).
 4. Tap **Print Label**.
-5. If needed, run the virtual printer from `/Users/geek/MY OWN PROJECTs/test_print/scripts/virtual_printer.py` to validate payloads.
+5. If needed, run the virtual printer from `scripts/virtual_printer.py` to validate payloads.
 
 ## Read These Next
 
-1. `/Users/geek/MY OWN PROJECTs/test_print/docs/ARCHITECTURE.md`
-2. `/Users/geek/MY OWN PROJECTs/test_print/docs/INTEGRATION.md`
-3. `/Users/geek/MY OWN PROJECTs/test_print/docs/TROUBLESHOOTING.md`
-4. `/Users/geek/MY OWN PROJECTs/test_print/docs/TESTING.md`
+1. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+2. [`docs/INTEGRATION.md`](docs/INTEGRATION.md)
+3. [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md)
+4. [`docs/TESTING.md`](docs/TESTING.md)
 
 ## Scope
 
